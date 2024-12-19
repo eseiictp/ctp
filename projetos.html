@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossos projetos</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #004753;
+        }
+
+        .header {
+            padding: 20px;
+            background-color: #004753;
+        }
+
+        .logo {
+            max-width: 200px;
+        }
+
+        .slider-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .legend {
+            background: white;
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .legend h2 {
+            color: #004753;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .legend p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 40%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.8);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .slider-btn:hover {
+            background: white;
+        }
+
+        .prev {
+            left: 30px;
+        }
+
+        .next {
+            right: 30px;
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .dot.active {
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <img src="/api/placeholder/200/60" alt="Certiphic Logo" class="logo">
+    </header>
+
+    <div class="slider-container">
+        <div class="slider">
+            <div class="slide">
+                <img src="/api/placeholder/1200/600" alt="Modern Apartment Building">
+                <div class="legend">
+                    <h2>Urban Living Residences</h2>
+                    <p>A modern 10-story residential building featuring glass facades and private balconies. This contemporary development offers premium urban living with integrated smart home technology and sustainable design principles.</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="/api/placeholder/1200/600" alt="Commercial Tower">
+                <div class="legend">
+                    <h2>Green Tower Business Center</h2>
+                    <p>An innovative commercial tower with vertical gardens and sustainable architecture. This state-of-the-art office building combines workspace efficiency with environmental consciousness through its unique stepped garden design.</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="/api/placeholder/1200/600" alt="Luxury Pool Area">
+                <div class="legend">
+                    <h2>Palm Resort Residences</h2>
+                    <p>Luxury residential complex featuring resort-style amenities including an infinity pool surrounded by tropical landscaping. Perfect blend of sophisticated living and vacation-style comfort.</p>
+                </div>
+            </div>
+        </div>
+        
+        <button class="slider-btn prev">←</button>
+        <button class="slider-btn next">→</button>
+        
+        <div class="dots">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            let currentSlide = 0;
+            const slides = $('.slide');
+            const dots = $('.dot');
+            const totalSlides = slides.length;
+
+            function updateSlider() {
+                $('.slider').css('transform', `translateX(-${currentSlide * 100}%)`);
+                dots.removeClass('active');
+                $(dots[currentSlide]).addClass('active');
+            }
+
+            $('.next').click(function(){
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlider();
+            });
+
+            $('.prev').click(function(){
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                updateSlider();
+            });
+
+            dots.click(function(){
+                currentSlide = $(this).index();
+                updateSlider();
+            });
+
+            // Auto advance slides
+            setInterval(function(){
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlider();
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
