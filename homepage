@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://player.vimeo.com/api/player.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #004357;
+        }
+
+        .header {
+            background-color: #526D82;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            width: 150px;
+            height: 40px;
+            background-color: #9DB2BF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border-radius: 4px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-button {
+            padding: 0.5rem 1rem;
+            background-color: #27374D;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .slider-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 2rem auto;
+            overflow: hidden;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 400px;
+            background-color: #DDE6ED;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .prev {
+            left: 0;
+        }
+
+        .next {
+            right: 0;
+        }
+
+        .video-section {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+
+        #video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        #video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">LOGO</div>
+        <div class="nav-buttons">
+            <button class="nav-button">Home</button>
+            <button class="nav-button">Photos</button>
+            <button class="nav-button">Videos</button>
+        </div>
+    </header>
+
+    <div class="slider-container">
+        <button class="slider-button prev">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="slider-button next">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="slider">
+            <div class="slide">
+                <img src="https://raw.githubusercontent.com/eseiictp/ctp/main/PGR_03_VOO_RESIDENCIAL_EF_LOW-R00.JPG" alt="Project 1">
+            </div>
+            <div class="slide">
+                <img src="https://raw.githubusercontent.com/eseiictp/ctp/main/GHA_29_ROOFTOP_EF-R00.jpg" alt="Project 2">
+            </div>
+            <div class="slide">
+                <img src="https://raw.githubusercontent.com/eseiictp/ctp/main/hiae.jpg" alt="Project 3">
+            </div>
+        </div>
+    </div>
+
+    <div class="video-section">
+        <div id="video-container">
+            <iframe 
+                id="vimeo-player" 
+                src="https://player.vimeo.com/video/860310045?h=602441a704&autoplay=1&loop=0&autopause=0" 
+                frameborder="0" 
+                allow="autoplay; fullscreen" 
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
+    <script>
+        // Slider functionality
+        const slider = document.querySelector('.slider');
+        const slides = document.querySelectorAll('.slide');
+        const prevButton = document.querySelector('.prev');
+        const nextButton = document.querySelector('.next');
+        let currentSlide = 0;
+
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        prevButton.addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            updateSlider();
+        });
+
+        nextButton.addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateSlider();
+        });
+
+        // Vimeo player setup for playlist
+        const videoIds = [
+            '860310045', // First video
+	          '1040379321', // Second video
+            '1040129454', // Third video
+	          '1040398619'
+        ];
+        let currentVideoIndex = 0;
+        const player = new Vimeo.Player('vimeo-player');
+
+        // Handle video ended event
+        player.on('ended', function() {
+            currentVideoIndex = (currentVideoIndex + 1) % videoIds.length;
+            const nextVideoUrl = `https://player.vimeo.com/video/${videoIds[currentVideoIndex]}?h=602441a704&autoplay=1&loop=0&autopause=0`;
+            document.getElementById('vimeo-player').src = nextVideoUrl;
+        });
+    </script>
+</body>
+</html>
