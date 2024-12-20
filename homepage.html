@@ -21,7 +21,7 @@
 
         .header {
             background-color: #526D82;
-            padding: 0.5rem;
+            padding: 1rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -230,11 +230,17 @@
         let currentVideoIndex = 0;
         const player = new Vimeo.Player('vimeo-player');
 
-        // Handle video ended event
         player.on('ended', function() {
+            // Move to the next video, or loop back to the first
             currentVideoIndex = (currentVideoIndex + 1) % videoIds.length;
-            const nextVideoUrl = `https://player.vimeo.com/video/${videoIds[currentVideoIndex]}?h=602441a704&autoplay=1&loop=0&autopause=0`;
-            document.getElementById('vimeo-player').src = nextVideoUrl;
+            
+            // Load the next video
+            player.loadVideo(videoIds[currentVideoIndex]).then(function() {
+                // Automatically play the new video
+                player.play();
+            }).catch(function(error) {
+                console.error('Error loading video:', error);
+            });
         });
     </script>
 </body>
